@@ -1,0 +1,155 @@
+@(events: List[pojo.Event]) @main("Memebrancer 1.0") {
+
+<script>
+
+$(document).ready(function() {
+
+    $('#calendar').fullCalendar({
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,listMonth'
+      },
+      navLinks: true,
+      editable: true,
+      eventDrop: function(event, delta, revertFunc) {
+
+    	//ajax call    	
+    	var calDate = new Date(event.start);
+		var dateStr = event.title.split(' ')[1] + pad(calDate.getMonth()+1,2) + pad(calDate.getDate(),2)
+    	var saveStr = dateStr+";"+event.className[0].split(';')[1]+";"+event.title.split(':')[0];
+
+		$.ajax({
+	 	           url:'/update',
+	 	           method: 'GET',
+	 	           data: { event: event.id+";"+saveStr},
+	 	           success:function(data){
+	 	        	   console.log('response: '+data);
+	 	        	   return false;
+	 	           }
+	 	       });
+    	   
+
+    	  },
+      dayClick: function(date, jsEvent, view) {
+
+    	    //insert dialog
+    	    var event = prompt("Please enter birthday;type;name:", date.format("YYYYMMDD")+";1;");
+
+			if (event == null || event == "") {
+			} else {
+				
+				if(event.split(';')[1]=="1"){
+					var eventObject={id:-1 , title: event.split(';')[2], start: date, allDay: true};
+				}else{
+					var eventObject={id:-1 , title: event.split(';')[2], start: date, allDay: true, color:'black'};
+				}
+				$('#calendar').fullCalendar( 'renderEvent', eventObject, true);
+
+				//ajax call
+				$.ajax({
+		 	           url:'/create',
+		 	           method: 'GET',
+		 	           data: { event: event},
+		 	           success:function(data){
+		 	        	   console.log('response: '+data);
+		 	        	   alert('Event created: '+data)
+		 	        	   return false;
+		 	           }
+		 	       });
+			}
+    	    
+    	    
+
+    	  },
+      eventClick: function(calEvent, jsEvent, view) {
+
+			//update dialog
+			var calDate = new Date(calEvent.start);
+			var dateStr = calEvent.title.split(' ')[1] + pad(calDate.getMonth()+1,2) + pad(calDate.getDate(),2) 
+    	    var event = prompt("Please enter birthday;type;name:", dateStr+";1;"+calEvent.title.split(':')[0]);
+
+			if (event == null || event == "") {
+			    $('#calendar').fullCalendar('removeEvents', calEvent.id);
+
+			    //delete
+				$.ajax({
+		 	           url:'/delete',
+		 	           method: 'GET',
+		 	           data: { eventId: calEvent.id},
+		 	           success:function(data){
+		 	        	   console.log('response: '+data);
+		 	        	   alert('Event deleted: '+data)
+		 	        	   return false;
+		 	           }
+		 	       });
+			    
+			} else {
+				
+				
+				calEvent.title=event.split(';')[2] + ": "+event.split(';')[0];
+			    $('#calendar').fullCalendar('updateEvent', calEvent);
+
+				//ajax call
+			    $.ajax({
+		 	           url:'/update',
+		 	           method: 'GET',
+		 	           data: { event: calEvent.id+";"+event},
+		 	           success:function(data){
+		 	        	   console.log('response: '+data);
+		 	        	   alert('Event updated: '+data)
+		 	        	   return false;
+		 	           }
+		 	       });
+			}
+  	  },
+      events: [
+       
+        @for(event <- events) {
+			  {
+				    id: @event.getLineNr(),
+					title: '@event.getDisplayName()',
+					allDay: true,
+					className: '@event.toStoreString()' ,
+					start: new Date((new Date()).getFullYear(), @event.getMonth(), @event.getDay()),
+					@if(event.getType==0){ color: 'black' }
+			  
+				},
+		}
+		
+        
+      ]
+      
+      
+    });
+
+  });
+  
+$('#calendar').fullCalendar({
+	  
+	});
+	
+function pad(num, size) {
+    var s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
+}
+
+</script>
+<style>
+body {
+	margin: 40px 10px;
+	padding: 0;
+	font-family: "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
+	font-size: 14px;
+}
+
+#calendar {
+	max-width: 900px;
+	margin: 0 auto;
+}
+</style>
+
+<div id='calendar'></div>
+
+}
