@@ -1,0 +1,5 @@
+/conf/application.conf
+/target
+/logs
+/.settings
+/.g8

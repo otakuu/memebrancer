@@ -38,3 +38,9 @@ And a birthdays.txt file **don't forget the newline at the end!**:
 19800104;0;GranMa
 ```
 1=Birthday, 0=Dead
+
+## Running the app
+```
+sbt run
+```
+localhost:9000
