@@ -6,83 +6,113 @@ import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Event {
+public class Event
+{
 
-	private Integer lineNr;
-	private String name;
-	private Date date;
-	private Integer type;
+  private Integer lineNr;
 
-	public Event(Integer lineNr, String name, Date date, Integer type) {
-		super();
-		this.lineNr = lineNr;
-		this.name = name;
-		this.date = date;
-		this.type = type;
-	}
+  private String  name;
 
-	public Integer getLineNr() {
-		return lineNr;
-	}
+  private Date    date;
 
-	public void setLineNr(Integer lineNr) {
-		this.lineNr = lineNr;
-	}
+  private Integer type;
 
-	public String getName() {
-		return name;
-	}
+  public Event(
+               Integer lineNr,
+               String name,
+               Date date,
+               Integer type)
+  {
+    super();
+    this.lineNr = lineNr;
+    this.name = name;
+    this.date = date;
+    this.type = type;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public Integer getLineNr()
+  {
+    return lineNr;
+  }
 
-	public Date getDate() {
-		return date;
-	}
+  public void setLineNr(Integer lineNr)
+  {
+    this.lineNr = lineNr;
+  }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+  public String getName()
+  {
+    return name;
+  }
 
-	public Integer getType() {
-		return type;
-	}
+  public void setName(String name)
+  {
+    this.name = name;
+  }
 
-	public void setType(Integer type) {
-		this.type = type;
-	}
+  public Date getDate()
+  {
+    return date;
+  }
 
-	@Override
-	public String toString() {
-		return "Event [lineNr=" + lineNr + ", name=" + name + ", date=" + date + ", type=" + type + "]";
-	}
+  public void setDate(Date date)
+  {
+    this.date = date;
+  }
 
-	public String toStoreString() {
-		DateFormat df = new SimpleDateFormat(Constants.DATEFORMAT);
-		String dateAsStr = df.format(date);
-		return dateAsStr + Constants.SEPARATOR + type + Constants.SEPARATOR + name;
-	}
+  public Integer getType()
+  {
+    return type;
+  }
 
-	public String getDisplayName() {
-		return name + ": " + getYear() + " (" + diff() + ")";
-	}
+  public void setType(Integer type)
+  {
+    this.type = type;
+  }
 
-	public Integer getMonth() {
-		return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getMonthValue() - 1;
-	}
+  @Override
+  public String toString()
+  {
+    return "Event [lineNr=" + lineNr + ", name=" + name + ", date=" + date + ", type=" + type + "]";
+  }
 
-	public Integer getDay() {
-		return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getDayOfMonth();
-	}
+  public String toStoreString()
+  {
+    DateFormat df = new SimpleDateFormat(Constants.DATEFORMAT);
+    String dateAsStr = df.format(date);
+    return dateAsStr + Constants.SEPARATOR + type + Constants.SEPARATOR + name;
+  }
 
-	public Integer getYear() {
-		return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear();
-	}
+  public String toGuiDate()
+  {
+    DateFormat df = new SimpleDateFormat("yyyy");
+    String dateAsStr = df.format(date);
+    return dateAsStr + ";" + this.type;
+  }
 
-	public Integer diff() {
-		return Calendar.getInstance().get(Calendar.YEAR)
-				- date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear();
-	}
+  public String getDisplayName()
+  {
+    return name + ": " + getYear() + " (" + diff() + ")";
+  }
+
+  public Integer getMonth()
+  {
+    return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getMonthValue() - 1;
+  }
+
+  public Integer getDay()
+  {
+    return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getDayOfMonth();
+  }
+
+  public Integer getYear()
+  {
+    return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear();
+  }
+
+  public Integer diff()
+  {
+    return Calendar.getInstance().get(Calendar.YEAR) - date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear();
+  }
 
 }

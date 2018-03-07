@@ -104,7 +104,7 @@ public class EventManager
   {
     String[] event = line.split(Constants.SEPARATOR);
     LOGGER.info("Event [date= " + event[1] + ", type=" + event[2] + ", name=" + event[3] + "]");
-    DateFormat format = new SimpleDateFormat(Constants.DATEFORMAT);
+    DateFormat format = new SimpleDateFormat(Constants.DATEFORMATGUI);
     Date date = format.parse(event[1]);
     return new Event(Integer.parseInt(event[0]), event[3], date, Integer.parseInt(event[2]));
   }
@@ -116,8 +116,8 @@ public class EventManager
     LOGGER.debug("" + newLine);
     try
     {
-      Event event = createEventFromStr(-1, newLine);
-      newLine += "\n";
+      Event event = updateEventFromStr(newLine);
+      newLine = event.toStoreString() + "\n";
       Files.write(Paths.get(filePath), newLine.getBytes(), StandardOpenOption.APPEND);
       eventList.add(event);
     }
@@ -233,6 +233,16 @@ public class EventManager
     }
     return _eventList;
 
+  }
+
+  public Event getEventById(Integer eventId)
+  {
+    for (Event event : eventList)
+    {
+      if (event.getLineNr() == eventId)
+        return event;
+    }
+    return null;
   }
 
 }
