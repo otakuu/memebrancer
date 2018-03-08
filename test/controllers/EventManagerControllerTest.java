@@ -2,6 +2,8 @@ package controllers;
 
 import org.junit.Test;
 
+import pojo.EventManager;
+
 public class EventManagerControllerTest
 {
 
@@ -9,6 +11,8 @@ public class EventManagerControllerTest
   public void testIndex()
   {
 
+    EventManager eventManager = new EventManager("C:\\temp\\birthdays.txt");
+    eventManager.getUpcommingEvents();
   }
 
 }

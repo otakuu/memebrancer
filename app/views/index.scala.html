@@ -1,4 +1,4 @@
-@(events: List[pojo.Event]) @main("Memebrancer 1.1") {
+@(events: List[pojo.Event]) @main("Memebrancer 1.3") {
 
 <script>
 
@@ -98,6 +98,9 @@ function pad(num, size) {
 
 function saveEvent() {
     console.log('saving...');
+	
+	document.getElementById("eventName").focus();
+	
 	var eventId = $('#eventId').val();
 	var eventName = $('#eventName').val();
 	var eventType = $('#eventType').val();
@@ -119,28 +122,38 @@ function saveEvent() {
 		 	method: 'GET',
 		 	data: { event: "-1;"+eventDate+";"+eventType+";"+eventName},
 					success:function(data){
+					
+					console.log(data)
+					eventObject.id=data;
+					console.log(eventObject);
+					$('#calendar').fullCalendar('renderEvent', eventObject, true);
+					
 		 	        }
 		 	});
 		
-		console.log(eventObject);
-		$('#calendar').fullCalendar('renderEvent', eventObject, true);
+		
 
 	}else{
 		console.log(selectedEvent);
 		selectedEvent.title=eventTitle;
 		$('#calendar').fullCalendar('updateEvent', selectedEvent);
 
-		//ajax call
-		$.ajax({
-			url:'/update',
-			method: 'GET',
-			data: { event: eventId+";"+eventDate+";"+eventType+";"+eventName},
-			success:function(data){
-				console.log('response: '+data);
-				return false;
-			 }
-		});
+		if(eventId>-1){
+			//ajax call
+			$.ajax({
+				url:'/update',
+				method: 'GET',
+				data: { event: eventId+";"+eventDate+";"+eventType+";"+eventName},
+				success:function(data){
+					console.log('response: '+data);
+					return false;
+				 }
+			});
+		}
 	}
+	
+	document.getElementById("eventForm").reset();
+
 }
 
 function deleteEvent(){
@@ -159,8 +172,7 @@ function deleteEvent(){
 		 	return false;
 		}
 	});
-				   
-	document.getElementById("eventForm").reset();
+	location.reload();		   
 }
 
 </script>
@@ -182,14 +194,14 @@ body {
 <div style="text-align: center;">  
 <form id="eventForm">
 
-<input type="hidden" id="eventId" />
+<input type="text" size=3 readonly id="eventId" />
 
 <label>Event Date:</label>
 <input type="text" size=10 id="eventDate" placeholder="Date"/>
 <label>Name:</label>
 <input type="text" id="eventName" placeholder="Name"/>
 <label>Type:</label>
-<input type="text" id="eventType" placeholder="Type"/>
+<input type="text" size=1 id="eventType" placeholder="Type"/>
 </form>
 <br>
 <input type="button" id="saveEvent" onclick="saveEvent()" value="Save"/>

@@ -121,6 +121,12 @@ public class OnStartup
         sb.append("Deaths:\n");
       sb = createBeautyList(deadToday, sb);
 
+      List<Event> upcomingLlist = eventManager.getUpcommingEvents();
+      LOGGER.info("upcomingLlist: " + upcomingLlist);
+      if (upcomingLlist.size() > 0)
+        sb.append("Upcomming:\n");
+      sb = createBeautyList(upcomingLlist, sb);
+
       sb.append("\nHave a nice day!");
 
       Message message = new MimeMessage(session);

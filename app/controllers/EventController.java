@@ -40,8 +40,8 @@ public class EventController extends Controller
   public Result create(String eventAsStr)
   {
     LOGGER.info("Creating event: " + eventAsStr);
-    eventManager.createEvent(eventAsStr);
-    return ok("ok");
+    int lineNr = eventManager.createEvent(eventAsStr);
+    return ok("" + lineNr);
   }
 
   public Result update(String eventAsStr)

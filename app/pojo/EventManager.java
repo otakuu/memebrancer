@@ -12,7 +12,9 @@ import java.nio.file.StandardOpenOption;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -109,7 +111,7 @@ public class EventManager
     return new Event(Integer.parseInt(event[0]), event[3], date, Integer.parseInt(event[2]));
   }
 
-  public void createEvent(String newLine)
+  public int createEvent(String newLine)
   {
 
     LOGGER.info("Creating new event");
@@ -119,18 +121,19 @@ public class EventManager
       Event event = updateEventFromStr(newLine);
       newLine = event.toStoreString() + "\n";
       Files.write(Paths.get(filePath), newLine.getBytes(), StandardOpenOption.APPEND);
+      event.setLineNr(eventList.size() + 1);
       eventList.add(event);
+      return eventList.size();
     }
     catch (IOException e)
     {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOGGER.error("IO-error during create event: " + e.getMessage(), e);
     }
     catch (ParseException e)
     {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOGGER.error("Parse-error during create event: " + e.getMessage(), e);
     }
+    return -1;
 
   }
 
@@ -231,6 +234,39 @@ public class EventManager
       if (event.getMonth() == new Date().getMonth() && event.getDay() == new Date().getDate() && eventType.getValue() == event.getType())
         _eventList.add(event);
     }
+    return _eventList;
+
+  }
+
+  public List<Event> getUpcommingEvents()
+  {
+
+    Collections.sort(eventList, (arg0, arg1) -> arg1.getMonthAndDay().compareTo(arg0.getMonthAndDay()));
+    Collections.reverse(eventList);
+
+    List<Event> _eventList = new ArrayList<Event>();
+    int nextEventDay = -1;
+    boolean found = false;
+
+    int todaysDayOfYear = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getDayOfYear();
+    for (Event event : eventList)
+    {
+      if (found && event.getMonthAndDay() == nextEventDay)
+      {
+        _eventList.add(event);
+        continue;
+      }
+
+      if (event.getMonthAndDay() > todaysDayOfYear && !found)
+      {
+        nextEventDay = event.getMonthAndDay();
+        found = true;
+        _eventList.add(event);
+
+      }
+    }
+    LOGGER.info("" + _eventList);
+
     return _eventList;
 
   }
