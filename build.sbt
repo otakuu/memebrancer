@@ -4,6 +4,8 @@ organization := "ch.otaku"
 version := "1.2-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
+enablePlugins(DockerPlugin)
+
 
 scalaVersion := "2.12.4"
 

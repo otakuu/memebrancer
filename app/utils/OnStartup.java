@@ -65,7 +65,7 @@ public class OnStartup
     props.put("mail.smtp.port", "587");
 
     // chronjob at 02:42 every day
-    this.actorSystem.scheduler().schedule(Duration.create(nextExecutionInSeconds(2, 42), TimeUnit.SECONDS), // initialDelay
+    this.actorSystem.scheduler().schedule(Duration.create(nextExecutionInSeconds(1, 42), TimeUnit.SECONDS), // initialDelay
         Duration.create(1, TimeUnit.DAYS), // once a day
         () -> {
 
@@ -73,7 +73,7 @@ public class OnStartup
 
         }, this.executionContext);
 
-    LOGGER.info("Membrance started!");
+    LOGGER.info("Membrancer started!");
 
   }
 
@@ -125,7 +125,7 @@ public class OnStartup
       LOGGER.info("upcomingLlist: " + upcomingLlist);
       if (upcomingLlist.size() > 0)
         sb.append("Upcomming:\n");
-      sb = createBeautyList(upcomingLlist, sb);
+      sb = createBeautyListUpcomming(upcomingLlist, sb);
 
       sb.append("\nHave a nice day!");
 
@@ -152,6 +152,16 @@ public class OnStartup
     for (Event event : eventList)
     {
       sb.append(" - " + event.getDisplayName() + "\n");
+    }
+
+    return sb;
+  }
+
+  private StringBuilder createBeautyListUpcomming(List<Event> eventList, StringBuilder sb)
+  {
+    for (Event event : eventList)
+    {
+      sb.append(" - " + event.getDay() + "." + event.getMonth() + ". : " + event.getDisplayName() + "\n");
     }
 
     return sb;
