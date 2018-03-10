@@ -42,6 +42,8 @@ $(document).ready(function() {
 			//reset form
 			selectedEvent=null;
 			document.getElementById("eventForm").reset();
+			document.getElementById("eventName").focus();
+
 			
 			//set values we know
 			$('#eventId').val(-1);
@@ -54,6 +56,8 @@ $(document).ready(function() {
 
 			//populate form
 			selectedEvent=calEvent;
+			document.getElementById("eventName").focus();
+
 			
 			$.ajax({
 		 	    url:'/getEventById',
@@ -175,20 +179,31 @@ function deleteEvent(){
 	location.reload();		   
 }
 
+function selectYear(){
+	var input = document.getElementById("eventDate");
+    setInputSelection(input, 5, 10);
+    return false;
+}
+
+function setInputSelection(input, startPos, endPos) {
+    input.focus();
+    if (typeof input.selectionStart != "undefined") {
+        input.selectionStart = startPos;
+        input.selectionEnd = endPos;
+    } else if (document.selection && document.selection.createRange) {
+        // IE branch
+        input.select();
+        var range = document.selection.createRange();
+        range.collapse(true);
+        range.moveEnd("character", endPos);
+        range.moveStart("character", startPos);
+        range.select();
+    }
+}
+
 </script>
-<script>
-    // Sidebar on left (default)
-    $(".sidebar.left").sidebar().trigger("sidebar:open");
 
-    // Sidebar on right side
-    $(".sidebar.right").sidebar({side: "right"});
 
-    // Sidebar on top side
-    $(".sidebar.top").sidebar({side: "top"});
-
-    // Sidebar on bottom side
-    $(".sidebar.bottom").sidebar({side: "bottom"});
-</script>
 <style>
 body {
 	margin: 20px 10px;
@@ -201,34 +216,77 @@ body {
 	max-width: 900px;
 	margin: 0 auto;
 }
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+/* Create three unequal columns that floats next to each other */
+.column {
+    float: left;
+    padding: 20px;
+}
+
+/* Left  column */
+.column.side {
+    width: 20%;
+}
+
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
 </style>
 
-<div class="sidebar left">Hello World</div>
-<div class="sidebar right">I am on right!</div>
-<div class="sidebar top">I am on top!</div>
-<div class="sidebar bottom">I am on bottom!</div>
 
+<div class="row">
+  <div class="column side">
+	
+	
+    <form id="eventForm">
 
-<div style="text-align: center;">  
-<form id="eventForm">
+		<h2>Event Details</h2>
+		
+		<table><tr><td>
+			<label>Event Id:</label></td><td>
+			<input type="text" size=3 readonly id="eventId" />
+			</td></tr>
+			<tr><td>
+			<label>Name:</label></td><td>
+			<input type="text" size=10 id="eventName" placeholder="Name"/>
+			</td></tr>
+			<tr><td>
+			<label>Event Date:</label></td><td>
+			<input type="text" size=10 id="eventDate" placeholder="Date" onfocus="selectYear()"/>
+			</td></tr>
+			<tr><td>
+			<label>Type:</label></td><td>
+			<select id="eventType">
+  <option value="1">1</option>
+  <option value="0">0</option>
+</select>
+			<!--<input type="text" size=1 id="eventType" placeholder="Type"/>-->
+			</td></tr>
+		</table>
+		</form>
+		
+		<br>
+		
+		<button type="button" id="saveEvent" onclick="saveEvent()" class="fc-button fc-state-default fc-corner-left">Save</button>
+		<button type="button" id="deleteEvent" onclick="deleteEvent()" class="fc-button fc-state-default fc-corner-right">Delete</button>
 
-<input type="text" size=3 readonly id="eventId" />
-
-<label>Event Date:</label>
-<input type="text" size=10 id="eventDate" placeholder="Date"/>
-<label>Name:</label>
-<input type="text" id="eventName" placeholder="Name"/>
-<label>Type:</label>
-<input type="text" size=1 id="eventType" placeholder="Type"/>
-</form>
-<br>
-<input type="button" id="saveEvent" onclick="saveEvent()" value="Save"/>
-<input type="button" id="deleteEvent" onclick="deleteEvent()" value="Delete"/>
+  </div>
+  <div class="column middle">
+	<div id='calendar'></div>
+  </div>
 </div>
-
-<br>
-
-<div id='calendar'></div>
-
 
 }

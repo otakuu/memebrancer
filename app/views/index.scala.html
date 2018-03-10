@@ -43,6 +43,13 @@ $(document).ready(function() {
 			selectedEvent=null;
 			document.getElementById("eventForm").reset();
 			document.getElementById("eventName").focus();
+			
+			//enable buttons -saveEvent
+			var element = document.getElementById("saveEvent");
+			element.classList.remove("fc-state-active");
+			
+			var element = document.getElementById("deleteEvent");
+			element.classList.add("fc-state-active");
 
 			
 			//set values we know
@@ -58,6 +65,12 @@ $(document).ready(function() {
 			selectedEvent=calEvent;
 			document.getElementById("eventName").focus();
 
+			//enable buttons
+			var element = document.getElementById("saveEvent");
+			element.classList.remove("fc-state-active");
+			
+			var element = document.getElementById("deleteEvent");
+			element.classList.remove("fc-state-active");
 			
 			$.ajax({
 		 	    url:'/getEventById',
@@ -137,9 +150,13 @@ function saveEvent() {
 		
 		
 
-	}else{
+	}else{ //update
 		console.log(selectedEvent);
 		selectedEvent.title=eventTitle;
+		selectedEvent.color='#3A87AD';
+		if(eventType=="0"){
+			selectedEvent.color='black';
+		}
 		$('#calendar').fullCalendar('updateEvent', selectedEvent);
 
 		if(eventId>-1){
@@ -157,6 +174,10 @@ function saveEvent() {
 	}
 	
 	document.getElementById("eventForm").reset();
+	
+	//diable buttons	
+	var element = document.getElementById("saveEvent");
+	element.classList.add("fc-state-active");
 
 }
 
@@ -257,7 +278,7 @@ body {
 		
 		<table><tr><td>
 			<label>Event Id:</label></td><td>
-			<input type="text" size=3 readonly id="eventId" />
+			<input style="border: 0" type="text" size=3 readonly id="eventId" />
 			</td></tr>
 			<tr><td>
 			<label>Name:</label></td><td>
@@ -269,15 +290,19 @@ body {
 			</td></tr>
 			<tr><td>
 			<label>Type:</label></td><td>
-			<input type="text" size=1 id="eventType" placeholder="Type"/>
+			<select id="eventType">
+			  <option value="1">Birth</option>
+			  <option value="0">Dead</option>
+			</select>
+			<!--<input type="text" size=1 id="eventType" placeholder="Type"/>-->
 			</td></tr>
 		</table>
 		</form>
 		
 		<br>
 		
-		<button type="button" id="saveEvent" onclick="saveEvent()" class="fc-button fc-state-default fc-corner-left">Save</button>
-		<button type="button" id="deleteEvent" onclick="deleteEvent()" class="fc-button fc-state-default fc-corner-right">Delete</button>
+		<button type="button" id="saveEvent" onclick="saveEvent()" class="fc-button fc-state-active fc-state-default">Save</button>
+		<button type="button" id="deleteEvent" onclick="deleteEvent()" class="fc-button fc-state-active fc-state-default ">Delete</button>
 
   </div>
   <div class="column middle">
