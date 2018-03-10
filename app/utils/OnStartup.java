@@ -131,7 +131,7 @@ public class OnStartup
       Message message = new MimeMessage(session);
 
       InternetAddress from = new InternetAddress(config.getString("gmailUsername"));
-      from.setPersonal("Membrancer Service");
+      from.setPersonal("Memebrancer Service");
       message.setFrom(from);
       message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(config.getString("emailTo")));
       message.setSubject("Birthday's and others: " + (bdaysToday.size() + deadToday.size()));
