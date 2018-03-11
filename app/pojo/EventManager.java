@@ -287,4 +287,16 @@ public class EventManager
     return null;
   }
 
+  public List<Event> getKogelJubliees()
+  {
+    List<Event> _eventList = new ArrayList<Event>();
+
+    for (Event event : eventList)
+    {
+      if (event.getDaysOnEarth() % 1000 == 0 && event.getType() == 1)
+        _eventList.add(event);
+    }
+    return _eventList;
+  }
+
 }

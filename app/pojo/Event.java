@@ -2,6 +2,7 @@ package pojo;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
@@ -118,6 +119,13 @@ public class Event
   public Integer diff()
   {
     return Calendar.getInstance().get(Calendar.YEAR) - date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear();
+  }
+
+  public long getDaysOnEarth()
+  {
+    LocalDate today = LocalDate.now();
+    long daysOnEarth = java.time.temporal.ChronoUnit.DAYS.between(today, this.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+    return daysOnEarth;
   }
 
 }

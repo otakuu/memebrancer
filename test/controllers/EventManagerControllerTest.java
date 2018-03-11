@@ -12,7 +12,7 @@ public class EventManagerControllerTest
   {
 
     EventManager eventManager = new EventManager("C:\\temp\\birthdays.txt");
-    eventManager.getUpcommingEvents();
+    eventManager.getKogelJubliees();
   }
 
 }

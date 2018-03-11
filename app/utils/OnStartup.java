@@ -63,7 +63,7 @@ public class OnStartup
     props.put("mail.smtp.host", "smtp.gmail.com");
     props.put("mail.smtp.port", "587");
 
-    // chronjob at 02:42 every day
+    // chronjob at 02:42 every day (-1, UTC)
     this.actorSystem.scheduler().schedule(Duration.create(nextExecutionInSeconds(1, 42), TimeUnit.SECONDS), // initialDelay
         Duration.create(1, TimeUnit.DAYS), // once a day
         () -> {
@@ -120,8 +120,14 @@ public class OnStartup
         sb.append("Deaths:\n");
       sb = createBeautyList(deadToday, sb);
 
+      List<Event> kogelJubilee = eventManager.getKogelJubliees();
+      LOGGER.info("kogelJubilee: " + kogelJubilee);
+      if (kogelJubilee.size() > 0)
+        sb.append("1000 days on earth:\n");
+      sb = createBeautyListKogel(kogelJubilee, sb);
+
       List<Event> upcomingLlist = eventManager.getUpcommingEvents();
-      LOGGER.info("upcomingLlist: " + upcomingLlist);
+      LOGGER.info("upcomingList: " + upcomingLlist);
       if (upcomingLlist.size() > 0)
         sb.append("Upcomming:\n");
       sb = createBeautyListUpcomming(upcomingLlist, sb);
@@ -134,7 +140,7 @@ public class OnStartup
       from.setPersonal("Memebrancer Service");
       message.setFrom(from);
       message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(config.getString("emailTo")));
-      message.setSubject("Birthday's and others: " + (bdaysToday.size() + deadToday.size()));
+      message.setSubject("Birthday's and others: " + (bdaysToday.size() + deadToday.size() + kogelJubilee.size()));
       message.setText(sb.toString());
 
       Transport.send(message);
@@ -155,7 +161,6 @@ public class OnStartup
     {
       sb.append(" - " + event.getDisplayName() + "\n");
     }
-
     return sb;
   }
 
@@ -163,9 +168,17 @@ public class OnStartup
   {
     for (Event event : eventList)
     {
-      sb.append(" - " + event.getDay() + "." + event.getMonth() + ". : " + event.getDisplayName() + "\n");
+      sb.append(" - " + event.getDay() + "." + (event.getMonth() + 1) + ". : " + event.getDisplayName() + "\n");
     }
+    return sb;
+  }
 
+  private StringBuilder createBeautyListKogel(List<Event> eventList, StringBuilder sb)
+  {
+    for (Event event : eventList)
+    {
+      sb.append(" - " + event.getName() + ": " + event.getDaysOnEarth() + "\n");
+    }
     return sb;
   }
 
