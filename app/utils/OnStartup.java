@@ -2,6 +2,7 @@ package utils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -132,7 +133,7 @@ public class OnStartup
         sb.append("Upcomming:\n");
       sb = createBeautyListUpcomming(upcomingLlist, sb);
 
-      sb.append("\nHave a nice day!");
+      sb.append("\nHave a nice day! (" + LocalDate.now().getDayOfYear() + ")");
 
       Message message = new MimeMessage(session);
 
