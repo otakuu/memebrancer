@@ -168,7 +168,7 @@ public class OnStartup
   {
     for (Event event : eventList)
     {
-      sb.append(" - " + event.getDay() + "." + (event.getMonth() + 1) + ". : " + event.getDisplayName() + "\n");
+      sb.append(" - " + event.getDay() + "." + (event.getMonth() + 1) + ". " + event.getDisplayName() + "\n");
     }
     return sb;
   }

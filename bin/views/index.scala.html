@@ -1,7 +1,6 @@
-@(events: List[pojo.Event]) @main("Memebrancer 1.3") {
+@(events: List[pojo.Event]) @main("Memebrancer 2.0") {
 
 <script>
-
 var selectedEvent;
 
 $(document).ready(function() {
@@ -12,7 +11,10 @@ $(document).ready(function() {
         center: 'title',
         right: 'month,listMonth'
       },
+	  themeSystem: 'bootstrap4',
       navLinks: true,
+	  eventTextColor: 'white',
+	  firstDay: 1, //monday first
       editable: true,
       eventDrop: function(event, delta, revertFunc) {
 
@@ -25,19 +27,18 @@ $(document).ready(function() {
     	var saveStr = calDate.getDate()+"."+ (calDate.getMonth()+1) +"."+calDate.getFullYear()+";"+event.className[0].split(';')[1]+";"+event.title.split(':')[0];
 		console.log(saveStr);
 
-		$.ajax({
-	 	    url:'/update',
-	 	    method: 'GET',
-	 	    data: { event: event.id+";"+saveStr},
-	 	        success:function(data){
-	 	        console.log('response: '+data);
-	 	        return false;
-	 	      }
-	 	});
-    	   
-
+			$.ajax({
+				url:'/update',
+				method: 'GET',
+				data: { event: event.id+";"+saveStr},
+					success:function(data){
+					console.log('response: '+data);
+					return false;
+				  }
+			});
+		
     	},
-		dayClick: function(date, jsEvent, view) {
+      dayClick: function(date, jsEvent, view) {
 
 			//reset form
 			selectedEvent=null;
@@ -50,7 +51,6 @@ $(document).ready(function() {
 			
 			var element = document.getElementById("deleteEvent");
 			element.classList.add("fc-state-active");
-
 			
 			//set values we know
 			$('#eventId').val(-1);
@@ -59,7 +59,7 @@ $(document).ready(function() {
 			$('#eventType').val(1);
 
     	},
-		eventClick: function(calEvent, jsEvent, view) {
+      eventClick: function(calEvent, jsEvent, view) {
 
 			//populate form
 			selectedEvent=calEvent;
@@ -85,12 +85,11 @@ $(document).ready(function() {
 		 	        return false;
 		 	        }
 		 	});
-
   	  },
       events: [
        
         @for(event <- events) {
-			  {
+				{
 				    id: @event.getLineNr(),
 					title: '@event.getDisplayName()',
 					allDay: true,
@@ -115,13 +114,18 @@ function pad(num, size) {
 
 function saveEvent() {
     console.log('saving...');
-	
 	document.getElementById("eventName").focus();
 	
 	var eventId = $('#eventId').val();
 	var eventName = $('#eventName').val();
 	var eventType = $('#eventType').val();
 	var eventDate = $('#eventDate').val();
+	
+	//input validation
+	var hasErrors = checkInput(eventName, eventDate);
+	if (hasErrors)
+		return
+	
 	var eventDateAsDate = new Date(eventDate.split('.')[2],eventDate.split('.')[1]-1,eventDate.split('.')[0])
 	var diff = new Date().getFullYear() - eventDateAsDate.getFullYear();
 	var eventTitle = eventName+": "+eventDateAsDate.getFullYear() + " ("+diff+")";
@@ -139,17 +143,12 @@ function saveEvent() {
 		 	method: 'GET',
 		 	data: { event: "-1;"+eventDate+";"+eventType+";"+eventName},
 					success:function(data){
-					
-					console.log(data)
-					eventObject.id=data;
-					console.log(eventObject);
-					$('#calendar').fullCalendar('renderEvent', eventObject, true);
-					
+						console.log(data)
+						eventObject.id=data;
+						console.log(eventObject);
+						$('#calendar').fullCalendar('renderEvent', eventObject, true);
 		 	        }
 		 	});
-		
-		
-
 	}else{ //update
 		console.log(selectedEvent);
 		selectedEvent.title=eventTitle;
@@ -222,9 +221,31 @@ function setInputSelection(input, startPos, endPos) {
     }
 }
 
+function checkInput(eventName, eventDate){
+
+	var hasErrors = false;
+
+	if(eventName=='' || eventDate=='') hasErrors=true;
+		
+	var d = eventDate.split('.')[0];
+	var m = eventDate.split('.')[1];
+	var y = eventDate.split('.')[2];
+	
+	if(d=='') hasErrors = true
+	if(m=='') hasErrors = true
+	if(y=='') hasErrors = true
+	
+	var dt = new Date(y, m, d);
+	console.log(dt);
+	if(dt=='Invalid Date') hasErrors=true;
+		
+	if(hasErrors) alert('check your input');
+		
+	return hasErrors;
+
+}
+
 </script>
-
-
 <style>
 body {
 	margin: 20px 10px;
@@ -237,6 +258,29 @@ body {
 	max-width: 900px;
 	margin: 0 auto;
 }
+
+  #top,
+  #calendar.fc-unthemed {
+    font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+  }
+
+  #top {
+    background: #eee;
+    border-bottom: 1px solid #ddd;
+    padding: 0 10px;
+    line-height: 40px;
+    font-size: 12px;
+    color: #000;
+  }
+
+  #top .selector {
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  #top select {
+    font: inherit; /* mock what Boostrap does, don't compete  */
+  }
 
 * {
     box-sizing: border-box;
@@ -267,47 +311,43 @@ body {
 
 </style>
 
-
 <div class="row">
   <div class="column side">
-	
 	
     <form id="eventForm">
 
 		<h2>Event Details</h2>
 		
 		<table><tr><td>
-			<label>Event Id:</label></td><td>
-			<input style="border: 0" type="text" size=3 readonly id="eventId" />
+				<label>Event Id:</label></td><td>
+				<input class="form-control" style="border: 0" type="text" readonly id="eventId" />
 			</td></tr>
 			<tr><td>
-			<label>Name:</label></td><td>
-			<input type="text" size=10 id="eventName" placeholder="Name"/>
+				<label>Name:</label></td><td>
+				<input class="form-control" type="text" size=10 id="eventName" placeholder="Name"/>
 			</td></tr>
 			<tr><td>
-			<label>Event Date:</label></td><td>
-			<input type="text" size=10 id="eventDate" placeholder="Date" onfocus="selectYear()"/>
+				<label>Event Date:</label></td><td>
+				<input class="form-control" type="text" size=10 id="eventDate" placeholder="Date" onfocus="selectYear()"/>
 			</td></tr>
 			<tr><td>
-			<label>Type:</label></td><td>
-			<select id="eventType">
-			  <option value="1">Birth</option>
-			  <option value="0">Dead</option>
-			</select>
-			<!--<input type="text" size=1 id="eventType" placeholder="Type"/>-->
+				<label>Type:</label></td><td>
+				<select class="form-control" id="eventType">
+					<option value="1">Birth</option>
+					<option value="0">Dead</option>
+				</select>
 			</td></tr>
 		</table>
 		</form>
-		
 		<br>
-		
 		<button type="button" id="saveEvent" onclick="saveEvent()" class="fc-button fc-state-active fc-state-default">Save</button>
 		<button type="button" id="deleteEvent" onclick="deleteEvent()" class="fc-button fc-state-active fc-state-default ">Delete</button>
 
   </div>
   <div class="column middle">
+  
 	<div id='calendar'></div>
+	
   </div>
 </div>
-
 }
