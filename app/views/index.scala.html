@@ -112,7 +112,7 @@ function pad(num, size) {
     return s;
 }
 
-function saveEvent() {
+function saveEventAction() {
     console.log('saving...');
 	document.getElementById("eventName").focus();
 	
@@ -182,7 +182,7 @@ function saveEvent() {
 
 }
 
-function deleteEvent(){
+function deleteEventAction(){
 
    var eventId = $('#eventId').val();
 
@@ -346,8 +346,8 @@ body {
 		<br>
 		<div class="btn-group">
 
-		<button type="button" id="saveEvent" onclick="saveEvent()" class="btn btn-primary active">Save</button>
-		<button type="button" id="deleteEvent" onclick="deleteEvent()" class="btn btn-primary active">Delete</button>
+		<button type="button" id="saveEvent" onclick="saveEventAction()" class="btn btn-primary active">Save</button>
+		<button type="button" id="deleteEvent" onclick="deleteEventAction()" class="btn btn-primary active">Delete</button>
 		</div>
 		</td></tr>
 		</table>
