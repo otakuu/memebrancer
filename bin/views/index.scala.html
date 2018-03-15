@@ -1,4 +1,4 @@
-@(events: List[pojo.Event]) @main("Memebrancer 2.0") {
+@(events: List[pojo.Event]) @main("Memebrancer 2.4") {
 
 <script>
 var selectedEvent;
@@ -47,10 +47,10 @@ $(document).ready(function() {
 			
 			//enable buttons -saveEvent
 			var element = document.getElementById("saveEvent");
-			element.classList.remove("fc-state-active");
+			element.classList.remove("active");
 			
 			var element = document.getElementById("deleteEvent");
-			element.classList.add("fc-state-active");
+			element.classList.add("active");
 			
 			//set values we know
 			$('#eventId').val(-1);
@@ -67,10 +67,10 @@ $(document).ready(function() {
 
 			//enable buttons
 			var element = document.getElementById("saveEvent");
-			element.classList.remove("fc-state-active");
+			element.classList.remove("active");
 			
 			var element = document.getElementById("deleteEvent");
-			element.classList.remove("fc-state-active");
+			element.classList.remove("active");
 			
 			$.ajax({
 		 	    url:'/getEventById',
@@ -112,7 +112,7 @@ function pad(num, size) {
     return s;
 }
 
-function saveEvent() {
+function saveEventAction() {
     console.log('saving...');
 	document.getElementById("eventName").focus();
 	
@@ -176,11 +176,13 @@ function saveEvent() {
 	
 	//diable buttons	
 	var element = document.getElementById("saveEvent");
-	element.classList.add("fc-state-active");
+	element.classList.add("active");
+	var element = document.getElementById("deleteEvent");
+	element.classList.add("active");
 
 }
 
-function deleteEvent(){
+function deleteEventAction(){
 
    var eventId = $('#eventId').val();
 
@@ -201,11 +203,13 @@ function deleteEvent(){
 
 function selectYear(){
 	var input = document.getElementById("eventDate");
-    setInputSelection(input, 5, 10);
+    setInputSelection(input);
     return false;
 }
 
-function setInputSelection(input, startPos, endPos) {
+function setInputSelection(input) {
+    var startPos = input.value.length-4;
+	var endPos = input.value.length;
     input.focus();
     if (typeof input.selectionStart != "undefined") {
         input.selectionStart = startPos;
@@ -316,7 +320,7 @@ body {
 	
     <form id="eventForm">
 
-		<h2>Event Details</h2>
+		<h3>Event Details</h3>
 		
 		<table><tr><td>
 				<label>Event Id:</label></td><td>
@@ -337,11 +341,16 @@ body {
 					<option value="0">Dead</option>
 				</select>
 			</td></tr>
-		</table>
 		</form>
+		<tr><td></td><td>
 		<br>
-		<button type="button" id="saveEvent" onclick="saveEvent()" class="fc-button fc-state-active fc-state-default">Save</button>
-		<button type="button" id="deleteEvent" onclick="deleteEvent()" class="fc-button fc-state-active fc-state-default ">Delete</button>
+		<div class="btn-group">
+
+		<button type="button" id="saveEvent" onclick="saveEventAction()" class="btn btn-primary active">Save</button>
+		<button type="button" id="deleteEvent" onclick="deleteEventAction()" class="btn btn-primary active">Delete</button>
+		</div>
+		</td></tr>
+		</table>
 
   </div>
   <div class="column middle">

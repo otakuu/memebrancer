@@ -262,7 +262,7 @@ public class EventManager
         continue;
       }
 
-      if (event.getMonthAndDay() > todaysDayOfYear && !found)
+      if (event.getMonthAndDay() > (todaysDayOfYear - 1) && !found)
       {
         nextEventDay = event.getMonthAndDay();
         LOGGER.info("Next day of an event: " + nextEventDay);

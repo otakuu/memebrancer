@@ -151,7 +151,7 @@ public class OnStartup
     }
     catch (Exception e)
     {
-      throw new RuntimeException(e);
+      LOGGER.error("exception: " + e.getMessage(), e);
     }
 
   }
