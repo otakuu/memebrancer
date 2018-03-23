@@ -1,7 +1,11 @@
 package controllers;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import org.junit.Test;
 
+import pojo.Constants;
 import pojo.EventManager;
 
 public class EventManagerControllerTest
@@ -21,5 +25,14 @@ public class EventManagerControllerTest
 
     EventManager eventManager = new EventManager("C:\\temp\\birthdays.txt");
     eventManager.getUpcommingEvents();
+  }
+
+  @Test
+  public void testDate()
+  {
+    LocalDate localDate = LocalDate.now();// For reference
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constants.DATEFORMATGUI);
+    String formattedString = localDate.format(formatter);
+    System.out.println(formattedString);
   }
 }

@@ -3,6 +3,7 @@ package utils;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -24,6 +25,7 @@ import com.typesafe.config.Config;
 import akka.actor.ActorSystem;
 import play.Logger;
 import play.libs.mailer.MailerClient;
+import pojo.Constants;
 import pojo.Event;
 import pojo.EventManager;
 import scala.collection.mutable.StringBuilder;
@@ -130,7 +132,7 @@ public class OnStartup
       List<Event> upcomingLlist = eventManager.getUpcommingEvents();
       LOGGER.info("upcomingList: " + upcomingLlist);
       if (upcomingLlist.size() > 0)
-        sb.append("Upcomming:\n");
+        sb.append("Upcoming:\n");
       sb = createBeautyListUpcomming(upcomingLlist, sb);
 
       sb.append("\nHave a nice day! (" + LocalDate.now().getDayOfYear() + ")");
@@ -141,7 +143,7 @@ public class OnStartup
       from.setPersonal("Memebrancer Service");
       message.setFrom(from);
       message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(config.getString("emailTo")));
-      message.setSubject("Birthday's and others: " + (bdaysToday.size() + deadToday.size() + kogelJubilee.size()));
+      message.setSubject("Birthday's and others: " + (bdaysToday.size() + deadToday.size() + kogelJubilee.size()) + " - " + getBeautifyToday());
       message.setText(sb.toString());
 
       Transport.send(message);
@@ -176,11 +178,26 @@ public class OnStartup
 
   private StringBuilder createBeautyListKogel(List<Event> eventList, StringBuilder sb)
   {
+    boolean hasEvent = false;
     for (Event event : eventList)
     {
-      sb.append(" - " + event.getName() + ": " + event.getDaysOnEarth() + "\n");
+      sb.append(" - " + event.getName() + " (" + event.getDaysOnEarth() + ")\n");
+      hasEvent = true;
     }
+
+    if (hasEvent)
+      sb.append("\n");
     return sb;
+  }
+
+  private String getBeautifyToday()
+  {
+
+    LocalDate localDate = LocalDate.now();// For reference
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constants.DATEFORMATGUI);
+    String formattedString = localDate.format(formatter);
+    return formattedString;
+
   }
 
 }
