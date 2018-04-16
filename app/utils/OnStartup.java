@@ -129,11 +129,11 @@ public class OnStartup
         sb.append("1000 days on earth:\n");
       sb = createBeautyListKogel(kogelJubilee, sb);
 
-      List<Event> upcomingLlist = eventManager.getUpcommingEvents();
-      LOGGER.info("upcomingList: " + upcomingLlist);
-      if (upcomingLlist.size() > 0)
+      List<Event> upcomingList = eventManager.getUpcommingEvents();
+      LOGGER.info("upcomingList: " + upcomingList);
+      if (upcomingList.size() > 0)
         sb.append("Upcoming:\n");
-      sb = createBeautyListUpcomming(upcomingLlist, sb);
+      sb = createBeautyListUpcomming(upcomingList, sb);
 
       sb.append("\nHave a nice day! (" + LocalDate.now().getDayOfYear() + ")");
 
