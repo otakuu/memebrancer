@@ -274,20 +274,9 @@
       <attribute name="javadoc_location" value="jar:file:C:\Users\dalleman\.ivy2\cache\com.typesafe.akka\akka-parsing_2.12\docs\akka-parsing_2.12-10.0.11-javadoc.jar!/"/>
     </attributes>
   </classpathentry>
-  <classpathentry sourcepath="C:\Users\dalleman\.ivy2\cache\com.typesafe.play\play-guice_2.12\srcs\play-guice_2.12-2.6.12-sources.jar" kind="lib" path="C:\Users\dalleman\.ivy2\cache\com.typesafe.play\play-guice_2.12\jars\play-guice_2.12-2.6.12.jar">
+  <classpathentry sourcepath="C:\Users\dalleman\.ivy2\cache\com.typesafe.play\play-openid_2.12\srcs\play-openid_2.12-2.6.12-sources.jar" kind="lib" path="C:\Users\dalleman\.ivy2\cache\com.typesafe.play\play-openid_2.12\jars\play-openid_2.12-2.6.12.jar">
     <attributes>
-      <attribute name="javadoc_location" value="jar:file:C:\Users\dalleman\.ivy2\cache\com.typesafe.play\play-guice_2.12\docs\play-guice_2.12-2.6.12-javadoc.jar!/"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry sourcepath="C:\Users\dalleman\.ivy2\cache\com.google.inject\guice\srcs\guice-4.1.0-sources.jar" kind="lib" path="C:\Users\dalleman\.ivy2\cache\com.google.inject\guice\jars\guice-4.1.0.jar">
-    <attributes>
-      <attribute name="javadoc_location" value="jar:file:C:\Users\dalleman\.ivy2\cache\com.google.inject\guice\docs\guice-4.1.0-javadoc.jar!/"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry sourcepath="C:\Users\dalleman\.ivy2\cache\aopalliance\aopalliance\srcs\aopalliance-1.0-sources.jar" kind="lib" path="C:\Users\dalleman\.ivy2\cache\aopalliance\aopalliance\jars\aopalliance-1.0.jar"/>
-  <classpathentry sourcepath="C:\Users\dalleman\.ivy2\cache\com.google.inject.extensions\guice-assistedinject\srcs\guice-assistedinject-4.1.0-sources.jar" kind="lib" path="C:\Users\dalleman\.ivy2\cache\com.google.inject.extensions\guice-assistedinject\jars\guice-assistedinject-4.1.0.jar">
-    <attributes>
-      <attribute name="javadoc_location" value="jar:file:C:\Users\dalleman\.ivy2\cache\com.google.inject.extensions\guice-assistedinject\docs\guice-assistedinject-4.1.0-javadoc.jar!/"/>
+      <attribute name="javadoc_location" value="jar:file:C:\Users\dalleman\.ivy2\cache\com.typesafe.play\play-openid_2.12\docs\play-openid_2.12-2.6.12-javadoc.jar!/"/>
     </attributes>
   </classpathentry>
   <classpathentry sourcepath="C:\Users\dalleman\.ivy2\cache\com.typesafe.play\play-ahc-ws_2.12\srcs\play-ahc-ws_2.12-2.6.12-sources.jar" kind="lib" path="C:\Users\dalleman\.ivy2\cache\com.typesafe.play\play-ahc-ws_2.12\jars\play-ahc-ws_2.12-2.6.12.jar">
@@ -345,24 +334,20 @@
       <attribute name="javadoc_location" value="jar:file:C:\Users\dalleman\.ivy2\cache\javax.cache\cache-api\docs\cache-api-1.0.0-javadoc.jar!/"/>
     </attributes>
   </classpathentry>
-  <classpathentry sourcepath="C:\Users\dalleman\.ivy2\cache\com.typesafe.play\play-ehcache_2.12\srcs\play-ehcache_2.12-2.6.12-sources.jar" kind="lib" path="C:\Users\dalleman\.ivy2\cache\com.typesafe.play\play-ehcache_2.12\jars\play-ehcache_2.12-2.6.12.jar">
+  <classpathentry sourcepath="C:\Users\dalleman\.ivy2\cache\com.typesafe.play\play-guice_2.12\srcs\play-guice_2.12-2.6.12-sources.jar" kind="lib" path="C:\Users\dalleman\.ivy2\cache\com.typesafe.play\play-guice_2.12\jars\play-guice_2.12-2.6.12.jar">
     <attributes>
-      <attribute name="javadoc_location" value="jar:file:C:\Users\dalleman\.ivy2\cache\com.typesafe.play\play-ehcache_2.12\docs\play-ehcache_2.12-2.6.12-javadoc.jar!/"/>
+      <attribute name="javadoc_location" value="jar:file:C:\Users\dalleman\.ivy2\cache\com.typesafe.play\play-guice_2.12\docs\play-guice_2.12-2.6.12-javadoc.jar!/"/>
     </attributes>
   </classpathentry>
-  <classpathentry sourcepath="C:\Users\dalleman\.ivy2\cache\com.typesafe.play\play-cache_2.12\srcs\play-cache_2.12-2.6.12-sources.jar" kind="lib" path="C:\Users\dalleman\.ivy2\cache\com.typesafe.play\play-cache_2.12\jars\play-cache_2.12-2.6.12.jar">
+  <classpathentry sourcepath="C:\Users\dalleman\.ivy2\cache\com.google.inject\guice\srcs\guice-4.1.0-sources.jar" kind="lib" path="C:\Users\dalleman\.ivy2\cache\com.google.inject\guice\jars\guice-4.1.0.jar">
     <attributes>
-      <attribute name="javadoc_location" value="jar:file:C:\Users\dalleman\.ivy2\cache\com.typesafe.play\play-cache_2.12\docs\play-cache_2.12-2.6.12-javadoc.jar!/"/>
+      <attribute name="javadoc_location" value="jar:file:C:\Users\dalleman\.ivy2\cache\com.google.inject\guice\docs\guice-4.1.0-javadoc.jar!/"/>
     </attributes>
   </classpathentry>
-  <classpathentry sourcepath="C:\Users\dalleman\.ivy2\cache\net.sf.ehcache\ehcache\srcs\ehcache-2.10.4-sources.jar" kind="lib" path="C:\Users\dalleman\.ivy2\cache\net.sf.ehcache\ehcache\jars\ehcache-2.10.4.jar">
+  <classpathentry sourcepath="C:\Users\dalleman\.ivy2\cache\aopalliance\aopalliance\srcs\aopalliance-1.0-sources.jar" kind="lib" path="C:\Users\dalleman\.ivy2\cache\aopalliance\aopalliance\jars\aopalliance-1.0.jar"/>
+  <classpathentry sourcepath="C:\Users\dalleman\.ivy2\cache\com.google.inject.extensions\guice-assistedinject\srcs\guice-assistedinject-4.1.0-sources.jar" kind="lib" path="C:\Users\dalleman\.ivy2\cache\com.google.inject.extensions\guice-assistedinject\jars\guice-assistedinject-4.1.0.jar">
     <attributes>
-      <attribute name="javadoc_location" value="jar:file:C:\Users\dalleman\.ivy2\cache\net.sf.ehcache\ehcache\docs\ehcache-2.10.4-javadoc.jar!/"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry sourcepath="C:\Users\dalleman\.ivy2\cache\org.ehcache\jcache\srcs\jcache-1.0.1-sources.jar" kind="lib" path="C:\Users\dalleman\.ivy2\cache\org.ehcache\jcache\jars\jcache-1.0.1.jar">
-    <attributes>
-      <attribute name="javadoc_location" value="jar:file:C:\Users\dalleman\.ivy2\cache\org.ehcache\jcache\docs\jcache-1.0.1-javadoc.jar!/"/>
+      <attribute name="javadoc_location" value="jar:file:C:\Users\dalleman\.ivy2\cache\com.google.inject.extensions\guice-assistedinject\docs\guice-assistedinject-4.1.0-javadoc.jar!/"/>
     </attributes>
   </classpathentry>
   <classpathentry sourcepath="C:\Users\dalleman\.ivy2\cache\com.typesafe.play\play-mailer_2.12\srcs\play-mailer_2.12-6.0.0-sources.jar" kind="lib" path="C:\Users\dalleman\.ivy2\cache\com.typesafe.play\play-mailer_2.12\jars\play-mailer_2.12-6.0.0.jar">
