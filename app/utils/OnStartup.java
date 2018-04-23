@@ -181,7 +181,7 @@ public class OnStartup
     boolean hasEvent = false;
     for (Event event : eventList)
     {
-      sb.append(" - " + event.getName() + " (" + event.getDaysOnEarth() + ")\n");
+      sb.append(" - " + event.getName() + " (" + (event.getDaysOnEarth() * -1) + ")\n");
       hasEvent = true;
     }
 
