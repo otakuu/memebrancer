@@ -5,3 +5,5 @@
 /.g8
 target
 /bin/
+/.cache-tests
+/.cache-main
