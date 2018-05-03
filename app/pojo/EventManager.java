@@ -256,7 +256,7 @@ public class EventManager
 
     for (Event event : eventList)
     {
-      if (found && event.getMonthAndDay() == nextEventDay)
+      if (found && event.getMonthAndDay() - 1 == nextEventDay)
       {
         _eventList.add(event);
         continue;
