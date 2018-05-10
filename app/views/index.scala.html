@@ -97,6 +97,19 @@ $(document).ready(function() {
 					start: new Date((new Date()).getFullYear(), @event.getMonth(), @event.getDay()),
 					@if(event.getType==0){ color: 'black' }
 				},
+				
+		}
+		//next year events
+		@for(event <- events) {
+				{
+				    id: @event.getLineNr(),
+					title: '@event.getDisplayName()',
+					allDay: true,
+					className: '@event.toGuiDate()' ,
+					start: new Date((new Date()).getFullYear()+1, @event.getMonth(), @event.getDay()),
+					@if(event.getType==0){ color: 'black' }
+				},
+				
 		}
       ]
     });

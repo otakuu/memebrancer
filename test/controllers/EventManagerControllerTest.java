@@ -23,7 +23,7 @@ public class EventManagerControllerTest
   public void testUpcomming()
   {
 
-    EventManager eventManager = new EventManager("C:\\temp\\birthdays.txt");
+    EventManager eventManager = new EventManager("C:\\temp\\bdaysTest.txt");
     eventManager.getUpcommingEvents();
   }
 

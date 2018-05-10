@@ -106,14 +106,15 @@ public class Event
     return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getDayOfMonth();
   }
 
-  public Integer getMonthAndDay()
-  {
-    return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getDayOfYear();
-  }
-
   public Integer getYear()
   {
     return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear();
+  }
+
+  public Integer getMonthAndDay()
+  {
+    return Integer.parseInt(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getMonthValue() + ""
+        + String.format("%02d", date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getDayOfMonth()));
   }
 
   public Integer diff()

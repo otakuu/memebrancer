@@ -248,7 +248,8 @@ public class EventManager
     int nextEventDay = -1;
     boolean found = false;
 
-    int todaysDayOfYear = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getDayOfYear() + 1;
+    int todaysDayOfYear = Integer.parseInt(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getMonthValue() + ""
+        + String.format("%02d", new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getDayOfMonth()));
 
     int lastEventOfYear = eventList.get(eventList.size() - 1).getMonthAndDay();
     if (todaysDayOfYear >= lastEventOfYear)
@@ -256,13 +257,13 @@ public class EventManager
 
     for (Event event : eventList)
     {
-      if (found && event.getMonthAndDay() - 1 == nextEventDay)
+      if (found && event.getMonthAndDay() == nextEventDay)
       {
         _eventList.add(event);
         continue;
       }
 
-      if (event.getMonthAndDay() + 1 > todaysDayOfYear && !found)
+      if (event.getMonthAndDay() > todaysDayOfYear && !found)
       {
         nextEventDay = event.getMonthAndDay();
         LOGGER.info("Next day of an event: " + nextEventDay);
