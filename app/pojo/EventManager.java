@@ -172,7 +172,7 @@ public class EventManager
     }
     catch (Exception e)
     {
-      System.out.println("Something went horribly wrong: " + e.getMessage());
+      LOGGER.error("Something went horribly wrong: " + e.getMessage());
     }
   }
 
