@@ -23,7 +23,6 @@ import org.joda.time.Seconds;
 import com.typesafe.config.Config;
 
 import akka.actor.ActorSystem;
-import play.Environment;
 import play.Logger;
 import play.libs.mailer.MailerClient;
 import pojo.Constants;
@@ -71,14 +70,8 @@ public class OnStartup
     this.actorSystem.scheduler().schedule(Duration.create(nextExecutionInSeconds(1, 42), TimeUnit.SECONDS), // initialDelay
         Duration.create(1, TimeUnit.DAYS), // once a day
         () -> {
-          if (!Environment.simple().isTest())
-          {
-            sendNotificatonMail();
-          }
-          else
-          {
-            LOGGER.info("dev mode, no mails will be sent");
-          }
+
+          sendNotificatonMail();
 
         }, this.executionContext);
 
