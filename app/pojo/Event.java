@@ -91,9 +91,9 @@ public class Event
     return dateAsStr + ";" + this.type;
   }
 
-  public String getDisplayName()
+  public String getDisplayName(int plusYear)
   {
-    return name + ": " + getYear() + " (" + diff() + ")";
+    return name + ": " + getYear() + " (" + (diff() + plusYear) + ")";
   }
 
   public Integer getMonth()

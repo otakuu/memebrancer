@@ -1,4 +1,4 @@
-@(events: List[pojo.Event]) @main("Memebrancer 2.6") {
+@(events: List[pojo.Event]) @main("Memebrancer 2.7") {
 
 <script>
 var selectedEvent;
@@ -91,7 +91,7 @@ $(document).ready(function() {
         @for(event <- events) {
 				{
 				    id: @event.getLineNr(),
-					title: '@event.getDisplayName()',
+					title: '@event.getDisplayName(0)',
 					allDay: true,
 					className: '@event.toGuiDate()' ,
 					start: new Date((new Date()).getFullYear(), @event.getMonth(), @event.getDay()),
@@ -103,7 +103,7 @@ $(document).ready(function() {
 		@for(event <- events) {
 				{
 				    id: @event.getLineNr(),
-					title: '@event.getDisplayName()',
+					title: '@event.getDisplayName(1)',
 					allDay: true,
 					className: '@event.toGuiDate()' ,
 					start: new Date((new Date()).getFullYear()+1, @event.getMonth(), @event.getDay()),

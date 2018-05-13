@@ -94,6 +94,7 @@ public class OnStartup
   private void sendNotificatonMail()
   {
 
+    LOGGER.info("try to send membrancer mail");
     Session session = Session.getInstance(props, new javax.mail.Authenticator()
     {
       protected PasswordAuthentication getPasswordAuthentication()
@@ -162,7 +163,7 @@ public class OnStartup
   {
     for (Event event : eventList)
     {
-      sb.append(" - " + event.getDisplayName() + "\n");
+      sb.append(" - " + event.getDisplayName(0) + "\n");
     }
     return sb;
   }
@@ -171,7 +172,7 @@ public class OnStartup
   {
     for (Event event : eventList)
     {
-      sb.append(" - " + event.getDay() + "." + (event.getMonth() + 1) + ". " + event.getDisplayName() + "\n");
+      sb.append(" - " + event.getDay() + "." + (event.getMonth() + 1) + ". " + event.getDisplayName(0) + "\n");
     }
     return sb;
   }
