@@ -1,9 +1,15 @@
-@(events: List[pojo.Event]) @main("Memebrancer 2.7") {
+@(events: List[pojo.Event], eventCnt: Integer) @main("Memebrancer 2.7") {
 
 <script>
 var selectedEvent;
 
 $(document).ready(function() {
+
+	//favicon
+	var favicon = new Favico({
+		animation : 'popFade'
+	});
+	favicon.badge(@eventCnt);
 
     $('#calendar').fullCalendar({
       header: {
@@ -330,13 +336,13 @@ body {
 
 <div class="row">
   <div class="column side">
-	
+	<h1>Membrancer</h1>
     <form id="eventForm">
 
-		<h3>Event Details</h3>
+		<h4>Event Details:</h4>
 		
 		<table><tr><td>
-				<label>Event Id:</label></td><td>
+				<label>Id:</label></td><td>
 				<input class="form-control" style="border: 0" type="text" readonly id="eventId" />
 			</td></tr>
 			<tr><td>
@@ -344,7 +350,7 @@ body {
 				<input class="form-control" type="text" size=10 id="eventName" placeholder="Name"/>
 			</td></tr>
 			<tr><td>
-				<label>Event Date:</label></td><td>
+				<label>Date:</label></td><td>
 				<input class="form-control" type="text" size=10 id="eventDate" placeholder="Date" onfocus="selectYear()"/>
 			</td></tr>
 			<tr><td>

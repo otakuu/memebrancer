@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.List;
+
 import com.google.inject.Inject;
 import com.typesafe.config.Config;
 
@@ -10,6 +12,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import pojo.Event;
 import pojo.EventManager;
+import utils.EventEnum;
 
 public class EventController extends Controller
 {
@@ -34,7 +37,10 @@ public class EventController extends Controller
   {
     LOGGER.info("Storage File Path: " + config.getString("storageFilePath"));
     eventManager = new EventManager(config.getString("storageFilePath"));
-    return ok(views.html.index.render(eventManager.getEventList()));
+    List<Event> eventsToday = eventManager.getTodaysEvents(EventEnum.Birthday);
+    eventsToday.addAll(eventManager.getTodaysEvents(EventEnum.Death));
+
+    return ok(views.html.index.render(eventManager.getEventList(), eventsToday.size()));
   }
 
   public Result create(String eventAsStr)
