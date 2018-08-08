@@ -129,4 +129,12 @@ public class Event
     return daysOnEarth;
   }
 
+  public String getFriendlyType()
+  {
+    if (type == 1)
+      return "Birthday";
+
+    return "Death";
+  }
+
 }

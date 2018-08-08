@@ -1,4 +1,4 @@
-@(events: List[pojo.Event], eventCnt: Integer) @main("Memebrancer 2.7") {
+@(events: List[pojo.Event], eventCnt: Integer) @main("Memebrancer 2.8") {
 
 <script>
 var selectedEvent;
@@ -336,11 +336,12 @@ body {
 
 <div class="row">
   <div class="column side">
-	<h1>Membrancer</h1>
+	<nobr><h3><img src="@routes.Assets.versioned("images/favicon.png")"> Memebrancer</h3></nobr>
+	
+	<br>
+	
     <form id="eventForm">
 
-		<h4>Event Details:</h4>
-		
 		<table><tr><td>
 				<label>Id:</label></td><td>
 				<input class="form-control" style="border: 0" type="text" readonly id="eventId" />
