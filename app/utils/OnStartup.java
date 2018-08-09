@@ -75,7 +75,7 @@ public class OnStartup
 
         }, this.executionContext);
 
-    LOGGER.info("Membrancer started!");
+    LOGGER.info("Memebrancer started!");
 
   }
 
@@ -94,7 +94,7 @@ public class OnStartup
   private void sendNotificatonMail()
   {
 
-    LOGGER.info("try to send membrancer mail");
+    LOGGER.info("try to send memebrancer mail");
     Session session = Session.getInstance(props, new javax.mail.Authenticator()
     {
       protected PasswordAuthentication getPasswordAuthentication()
