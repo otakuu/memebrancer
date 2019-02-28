@@ -70,4 +70,26 @@ public class EventController extends Controller
     Event event = eventManager.getEventById(eventId);
     return ok(Json.toJson(event));
   }
+
+  public Result todaysBirthdays()
+  {
+    eventManager = new EventManager(config.getString("storageFilePath"));
+    List<Event> events = eventManager.getTodaysEvents(EventEnum.Birthday);
+    return ok(Json.toJson(events)).withHeader("Access-Control-Allow-Origin", "*");
+  }
+
+  public Result todaysDeaths()
+  {
+    eventManager = new EventManager(config.getString("storageFilePath"));
+    List<Event> events = eventManager.getTodaysEvents(EventEnum.Death);
+    return ok(Json.toJson(events)).withHeader("Access-Control-Allow-Origin", "*");
+  }
+
+  public Result todaysKogelJubilee()
+  {
+    eventManager = new EventManager(config.getString("storageFilePath"));
+    List<Event> events = eventManager.getKogelJubliees();
+    return ok(Json.toJson(events)).withHeader("Access-Control-Allow-Origin", "*");
+  }
+
 }

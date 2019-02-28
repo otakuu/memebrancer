@@ -137,4 +137,9 @@ public class Event
     return "Death";
   }
 
+  public Integer getAge()
+  {
+    return Calendar.getInstance().get(Calendar.YEAR) - date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear();
+  }
+
 }

@@ -23,12 +23,12 @@ import org.joda.time.Seconds;
 import com.typesafe.config.Config;
 
 import akka.actor.ActorSystem;
+import play.Environment;
 import play.Logger;
 import play.libs.mailer.MailerClient;
 import pojo.Constants;
 import pojo.Event;
 import pojo.EventManager;
-import scala.collection.mutable.StringBuilder;
 import scala.concurrent.ExecutionContext;
 import scala.concurrent.duration.Duration;
 
@@ -41,6 +41,8 @@ public class OnStartup
 
   private Config                      config;
 
+  private Environment                 environment;
+
   private ActorSystem                 actorSystem;
 
   private ExecutionContext            executionContext;
@@ -51,11 +53,12 @@ public class OnStartup
 
   @Inject
   public OnStartup(
+                   Environment environment,
                    Config config,
                    ActorSystem actorSystem,
                    ExecutionContext executionContext) throws FileNotFoundException, IOException, InterruptedException
   {
-
+    this.environment = environment;
     this.config = config;
     this.actorSystem = actorSystem;
     this.executionContext = executionContext;
@@ -71,7 +74,8 @@ public class OnStartup
         Duration.create(1, TimeUnit.DAYS), // once a day
         () -> {
 
-          sendNotificatonMail();
+          if (!this.environment.isDev())
+            sendNotificatonMail();
 
         }, this.executionContext);
 
