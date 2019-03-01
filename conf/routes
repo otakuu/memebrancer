@@ -6,6 +6,8 @@ GET       /delete               controllers.EventController.delete(eventId: Inte
 GET       /getEventById         controllers.EventController.getEventById(eventId: Integer)
 GET       /weather              controllers.WeatherController.forecast
 OPTIONS   /weather              controllers.WeatherController.forecast
+GET       /temperature          controllers.WeatherController.temperature
+OPTIONS   /temperature          controllers.WeatherController.temperature
 GET       /todaysBirthdays      controllers.EventController.todaysBirthdays
 GET       /todaysKogelJubilee   controllers.EventController.todaysKogelJubilee
 GET       /todaysDeaths         controllers.EventController.todaysDeaths
