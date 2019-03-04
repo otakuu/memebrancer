@@ -3,13 +3,10 @@ package controllers;
 import java.util.List;
 
 import com.google.inject.Inject;
-import com.typesafe.config.Config;
 
-import play.Logger;
 import play.data.FormFactory;
 import play.libs.Json;
 import play.mvc.Controller;
-import play.mvc.Result;
 import pojo.Event;
 import pojo.EventManager;
 import utils.EventEnum;
@@ -89,6 +86,13 @@ public class EventController extends Controller
   {
     eventManager = new EventManager(config.getString("storageFilePath"));
     List<Event> events = eventManager.getKogelJubliees();
+    return ok(Json.toJson(events)).withHeader("Access-Control-Allow-Origin", "*");
+  }
+
+  public Result upcoming()
+  {
+    eventManager = new EventManager(config.getString("storageFilePath"));
+    List<Event> events = eventManager.getUpcommingEvents();
     return ok(Json.toJson(events)).withHeader("Access-Control-Allow-Origin", "*");
   }
 
