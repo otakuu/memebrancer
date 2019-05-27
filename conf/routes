@@ -12,6 +12,8 @@ GET       /todaysBirthdays      controllers.EventController.todaysBirthdays
 GET       /todaysKogelJubilee   controllers.EventController.todaysKogelJubilee
 GET       /todaysDeaths         controllers.EventController.todaysDeaths
 GET       /upcoming             controllers.EventController.upcoming
+GET       /songlog              controllers.SonglogController.proxy(stationId: String)
+OPTIONS   /songlog              controllers.SonglogController.proxy(stationId: String)
 
 
 # Map static resources from the /public folder to the /assets URL path
