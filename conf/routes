@@ -14,6 +14,8 @@ GET       /todaysDeaths         controllers.EventController.todaysDeaths
 GET       /upcoming             controllers.EventController.upcoming
 GET       /songlog              controllers.SonglogController.proxy(stationId: String)
 OPTIONS   /songlog              controllers.SonglogController.proxy(stationId: String)
+GET       /roundshot      		controllers.RoundshotController.image(domain: String, path: String)
+OPTIONS   /roundshot      		controllers.RoundshotController.image(domain: String, path: String)
 
 
 # Map static resources from the /public folder to the /assets URL path
