@@ -24,11 +24,12 @@ public class EpaperController extends Controller {
 
 	}
 
-	public Result proxy(String path) {
+	public Result proxy(String domain, String path) {
 		JsonNode json = request().body().asJson();
 		LOGGER.info("post payload: " + json);
-		WSRequest request = ws.url("https://epaper.nzz.ch/" + path);
-		WSRequest complexRequest = request.setRequestTimeout(Duration.of(6000, ChronoUnit.MILLIS));
+		WSRequest request = ws.url("https://" + domain + "/" + path);
+		WSRequest complexRequest = request.setRequestTimeout(Duration.of(6000, ChronoUnit.MILLIS)).addHeader(ACCEPT,
+				"application/json");
 		JsonNode returnBody;
 		try {
 			returnBody = complexRequest.post(json).thenApply(response -> response.asJson()).toCompletableFuture()
