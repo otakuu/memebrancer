@@ -11,7 +11,7 @@ OPTIONS   /temperature          controllers.WeatherController.temperature
 GET       /todaysBirthdays      controllers.EventController.todaysBirthdays
 GET       /todaysKogelJubilee   controllers.EventController.todaysKogelJubilee
 GET       /todaysDeaths         controllers.EventController.todaysDeaths
-GET       /upcoming             controllers.EventController.upcoming
+GET       /upcoming             controllers.EventController.upcoming(count: Integer)
 GET       /songlog              controllers.SonglogController.proxy(stationId: String)
 OPTIONS   /songlog              controllers.SonglogController.proxy(stationId: String)
 GET       /roundshot      		controllers.RoundshotController.image(domain: String, path: String)

@@ -29,180 +29,162 @@ import play.libs.mailer.MailerClient;
 import pojo.Constants;
 import pojo.Event;
 import pojo.EventManager;
-import scala.concurrent.ExecutionContext;
-import scala.concurrent.duration.Duration;
 
 @Singleton
-public class OnStartup
-{
+public class OnStartup {
 
-  @Inject
-  MailerClient                        mailerClient;
+	@Inject
+	MailerClient mailerClient;
 
-  private Config                      config;
+	private Config config;
 
-  private Environment                 environment;
+	private Environment environment;
 
-  private ActorSystem                 actorSystem;
+	private ActorSystem actorSystem;
 
-  private ExecutionContext            executionContext;
+	private scala.concurrent.ExecutionContext executionContext;
 
-  private Properties                  props;
+	private Properties props;
 
-  private static final Logger.ALogger LOGGER = Logger.of(OnStartup.class);
+	private static final Logger.ALogger LOGGER = Logger.of(OnStartup.class);
 
-  @Inject
-  public OnStartup(
-                   Environment environment,
-                   Config config,
-                   ActorSystem actorSystem,
-                   ExecutionContext executionContext) throws FileNotFoundException, IOException, InterruptedException
-  {
-    this.environment = environment;
-    this.config = config;
-    this.actorSystem = actorSystem;
-    this.executionContext = executionContext;
+	@Inject
+	public OnStartup(Environment environment, Config config, ActorSystem actorSystem,
+			scala.concurrent.ExecutionContext executionContext)
+			throws FileNotFoundException, IOException, InterruptedException {
+		this.environment = environment;
+		this.config = config;
+		this.actorSystem = actorSystem;
+		this.executionContext = executionContext;
 
-    props = new Properties();
-    props.put("mail.smtp.auth", "true");
-    props.put("mail.smtp.starttls.enable", "true");
-    props.put("mail.smtp.host", "smtp.gmail.com");
-    props.put("mail.smtp.port", "587");
+		props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
 
-    // chronjob at 02:42 every day (-1, UTC)
-    this.actorSystem.scheduler().schedule(Duration.create(nextExecutionInSeconds(1, 42), TimeUnit.SECONDS), // initialDelay
-        Duration.create(1, TimeUnit.DAYS), // once a day
-        () -> {
+		// chronjob at 02:42 every day (-1, UTC)
+		this.actorSystem.scheduler().schedule(
+				scala.concurrent.duration.Duration.create(nextExecutionInSeconds(1, 42), TimeUnit.SECONDS), // initialDelay
+				scala.concurrent.duration.Duration.create(1, TimeUnit.DAYS), // once a day
+				() -> {
 
-          if (!this.environment.isDev())
-            sendNotificatonMail();
+					if (!this.environment.isDev())
+						sendNotificatonMail();
 
-        }, this.executionContext);
+				}, this.executionContext);
 
-    LOGGER.info("Memebrancer started!");
+		LOGGER.info("Memebrancer started!");
 
-  }
+	}
 
-  public static int nextExecutionInSeconds(int hour, int minute)
-  {
-    return Seconds.secondsBetween(new DateTime(), nextExecution(hour, minute)).getSeconds();
-  }
+	public static int nextExecutionInSeconds(int hour, int minute) {
+		return Seconds.secondsBetween(new DateTime(), nextExecution(hour, minute)).getSeconds();
+	}
 
-  public static DateTime nextExecution(int hour, int minute)
-  {
-    DateTime next = new DateTime().withHourOfDay(hour).withMinuteOfHour(minute).withSecondOfMinute(0).withMillisOfSecond(0);
+	public static DateTime nextExecution(int hour, int minute) {
+		DateTime next = new DateTime().withHourOfDay(hour).withMinuteOfHour(minute).withSecondOfMinute(0)
+				.withMillisOfSecond(0);
 
-    return (next.isBeforeNow()) ? next.plusHours(24) : next;
-  }
+		return (next.isBeforeNow()) ? next.plusHours(24) : next;
+	}
 
-  private void sendNotificatonMail()
-  {
+	private void sendNotificatonMail() {
 
-    LOGGER.info("try to send memebrancer mail");
-    Session session = Session.getInstance(props, new javax.mail.Authenticator()
-    {
-      protected PasswordAuthentication getPasswordAuthentication()
-      {
-        return new PasswordAuthentication(config.getString("gmailUsername"), config.getString("gmailPassword"));
-      }
-    });
+		LOGGER.info("try to send memebrancer mail");
+		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(config.getString("gmailUsername"), config.getString("gmailPassword"));
+			}
+		});
 
-    try
-    {
-      StringBuilder sb = new StringBuilder();
+		try {
+			StringBuilder sb = new StringBuilder();
 
-      // get todays events
-      EventManager eventManager = new EventManager(config.getString("storageFilePath"));
-      List<Event> bdaysToday = eventManager.getTodaysEvents(EventEnum.Birthday);
-      LOGGER.info("bdays: " + bdaysToday);
-      if (bdaysToday.size() > 0)
-      {
-        sb.append("Birthdays:\n");
-        sb = createBeautyList(bdaysToday, sb);
-        sb.append("\n");
-      }
+			// get todays events
+			EventManager eventManager = new EventManager(config.getString("storageFilePath"));
+			List<Event> bdaysToday = eventManager.getTodaysEvents(EventEnum.Birthday);
+			LOGGER.info("bdays: " + bdaysToday);
+			if (bdaysToday.size() > 0) {
+				sb.append("Birthdays:\n");
+				sb = createBeautyList(bdaysToday, sb);
+				sb.append("\n");
+			}
 
-      List<Event> deadToday = eventManager.getTodaysEvents(EventEnum.Death);
-      LOGGER.info("deads: " + deadToday);
-      if (deadToday.size() > 0)
-        sb.append("Deaths:\n");
-      sb = createBeautyList(deadToday, sb);
+			List<Event> deadToday = eventManager.getTodaysEvents(EventEnum.Death);
+			LOGGER.info("deads: " + deadToday);
+			if (deadToday.size() > 0)
+				sb.append("Deaths:\n");
+			sb = createBeautyList(deadToday, sb);
 
-      List<Event> kogelJubilee = eventManager.getKogelJubliees();
-      LOGGER.info("kogelJubilee: " + kogelJubilee);
-      if (kogelJubilee.size() > 0)
-        sb.append("1000 days on earth:\n");
-      sb = createBeautyListKogel(kogelJubilee, sb);
+			List<Event> kogelJubilee = eventManager.getKogelJubliees();
+			LOGGER.info("kogelJubilee: " + kogelJubilee);
+			if (kogelJubilee.size() > 0)
+				sb.append("1000 days on earth:\n");
+			sb = createBeautyListKogel(kogelJubilee, sb);
 
-      List<Event> upcomingList = eventManager.getUpcommingEvents();
-      LOGGER.info("upcomingList: " + upcomingList);
-      if (upcomingList.size() > 0)
-        sb.append("Upcoming:\n");
-      sb = createBeautyListUpcomming(upcomingList, sb);
+			List<Event> upcomingList = eventManager.getUpcommingEvents(1);
+			LOGGER.info("upcomingList: " + upcomingList);
+			if (upcomingList.size() > 0)
+				sb.append("Upcoming:\n");
+			sb = createBeautyListUpcomming(upcomingList, sb);
 
-      sb.append("\nHave a nice day! (" + LocalDate.now().getDayOfYear() + ")");
+			sb.append("\nHave a nice day! (" + LocalDate.now().getDayOfYear() + ")");
 
-      Message message = new MimeMessage(session);
+			Message message = new MimeMessage(session);
 
-      InternetAddress from = new InternetAddress(config.getString("gmailUsername"));
-      from.setPersonal("Memebrancer Service");
-      message.setFrom(from);
-      message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(config.getString("emailTo")));
-      message.setSubject("Birthday's and others: " + (bdaysToday.size() + deadToday.size() + kogelJubilee.size()) + " - " + getBeautifyToday());
-      message.setText(sb.toString());
+			InternetAddress from = new InternetAddress(config.getString("gmailUsername"));
+			from.setPersonal("Memebrancer Service");
+			message.setFrom(from);
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(config.getString("emailTo")));
+			message.setSubject("Birthday's and others: " + (bdaysToday.size() + deadToday.size() + kogelJubilee.size())
+					+ " - " + getBeautifyToday());
+			message.setText(sb.toString());
 
-      Transport.send(message);
+			Transport.send(message);
 
-      LOGGER.info("Mail sent!");
+			LOGGER.info("Mail sent!");
 
-    }
-    catch (Exception e)
-    {
-      LOGGER.error("exception: " + e.getMessage(), e);
-    }
+		} catch (Exception e) {
+			LOGGER.error("exception: " + e.getMessage(), e);
+		}
 
-  }
+	}
 
-  private StringBuilder createBeautyList(List<Event> eventList, StringBuilder sb)
-  {
-    for (Event event : eventList)
-    {
-      sb.append(" - " + event.getDisplayName(0) + "\n");
-    }
-    return sb;
-  }
+	private StringBuilder createBeautyList(List<Event> eventList, StringBuilder sb) {
+		for (Event event : eventList) {
+			sb.append(" - " + event.getDisplayName(0) + "\n");
+		}
+		return sb;
+	}
 
-  private StringBuilder createBeautyListUpcomming(List<Event> eventList, StringBuilder sb)
-  {
-    for (Event event : eventList)
-    {
-      sb.append(" - " + event.getDay() + "." + (event.getMonth() + 1) + ". " + event.getDisplayName(0) + " (" + event.getFriendlyType() + ")" + "\n");
-    }
-    return sb;
-  }
+	private StringBuilder createBeautyListUpcomming(List<Event> eventList, StringBuilder sb) {
+		for (Event event : eventList) {
+			sb.append(" - " + event.getDay() + "." + (event.getMonth() + 1) + ". " + event.getDisplayName(0) + " ("
+					+ event.getFriendlyType() + ")" + "\n");
+		}
+		return sb;
+	}
 
-  private StringBuilder createBeautyListKogel(List<Event> eventList, StringBuilder sb)
-  {
-    boolean hasEvent = false;
-    for (Event event : eventList)
-    {
-      sb.append(" - " + event.getName() + " (" + (event.getDaysOnEarth() * -1) + ")\n");
-      hasEvent = true;
-    }
+	private StringBuilder createBeautyListKogel(List<Event> eventList, StringBuilder sb) {
+		boolean hasEvent = false;
+		for (Event event : eventList) {
+			sb.append(" - " + event.getName() + " (" + (event.getDaysOnEarth() * -1) + ")\n");
+			hasEvent = true;
+		}
 
-    if (hasEvent)
-      sb.append("\n");
-    return sb;
-  }
+		if (hasEvent)
+			sb.append("\n");
+		return sb;
+	}
 
-  private String getBeautifyToday()
-  {
+	private String getBeautifyToday() {
 
-    LocalDate localDate = LocalDate.now();// For reference
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constants.DATEFORMATGUI);
-    String formattedString = localDate.format(formatter);
-    return formattedString;
+		LocalDate localDate = LocalDate.now();// For reference
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constants.DATEFORMATGUI);
+		String formattedString = localDate.format(formatter);
+		return formattedString;
 
-  }
+	}
 
 }

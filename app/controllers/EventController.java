@@ -81,9 +81,9 @@ public class EventController extends Controller {
 		return ok(Json.toJson(events)).withHeader("Access-Control-Allow-Origin", "*");
 	}
 
-	public Result upcoming() {
+	public Result upcoming(Integer count) {
 		eventManager = new EventManager(config.getString("storageFilePath"));
-		List<Event> events = eventManager.getUpcommingEvents();
+		List<Event> events = eventManager.getUpcommingEvents(count);
 		return ok(Json.toJson(events)).withHeader("Access-Control-Allow-Origin", "*");
 	}
 

@@ -1,6 +1,8 @@
 <classpath>
   <classpathentry kind="src" path="app"/>
   <classpathentry kind="src" path="conf"/>
+  <classpathentry kind="src" path="target\scala-2.12\twirl\main"/>
+  <classpathentry kind="src" path="target\scala-2.12\routes\main"/>
   <classpathentry excluding="resources\" kind="src" path="test"/>
   <classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"></classpathentry>
   <classpathentry sourcepath="C:\Users\domin\.ivy2\cache\com.typesafe.play\twirl-api_2.12\srcs\twirl-api_2.12-1.3.14-sources.jar" kind="lib" path="C:\Users\domin\.ivy2\cache\com.typesafe.play\twirl-api_2.12\jars\twirl-api_2.12-1.3.14.jar">
