@@ -4,20 +4,10 @@ GET       /create               controllers.EventController.create(event: String
 GET       /update               controllers.EventController.update(event: String)
 GET       /delete               controllers.EventController.delete(eventId: Integer)
 GET       /getEventById         controllers.EventController.getEventById(eventId: Integer)
-GET       /weather              controllers.WeatherController.forecast
-OPTIONS   /weather              controllers.WeatherController.forecast
-GET       /temperature          controllers.WeatherController.temperature
-OPTIONS   /temperature          controllers.WeatherController.temperature
 GET       /todaysBirthdays      controllers.EventController.todaysBirthdays
 GET       /todaysKogelJubilee   controllers.EventController.todaysKogelJubilee
 GET       /todaysDeaths         controllers.EventController.todaysDeaths
 GET       /upcoming             controllers.EventController.upcoming(count: Integer)
-GET       /songlog              controllers.SonglogController.proxy(stationId: String)
-OPTIONS   /songlog              controllers.SonglogController.proxy(stationId: String)
-GET       /roundshot      		controllers.RoundshotController.image(domain: String, path: String)
-OPTIONS   /roundshot      		controllers.RoundshotController.image(domain: String, path: String)
-POST      /ePaper      			controllers.EpaperController.proxy(domain: String, path: String)
-OPTIONS   /ePaper      			controllers.EpaperController.proxy(domain: String, path: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET       /assets/*file         controllers.Assets.versioned(path="/public", file: Asset)
